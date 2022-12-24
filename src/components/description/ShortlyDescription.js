@@ -3,6 +3,7 @@ import logo from '../../assets/shortly.svg';
 import { Description, DescriptionContainer, Section1, Section2 } from './DescriptionElements';
 
 function ShortlyDescription() {
+  console.log('rendering ShortlyDescription component')
   return (
     <DescriptionContainer>
         <Description>
@@ -14,4 +15,4 @@ function ShortlyDescription() {
   )
 }
 
-export default ShortlyDescription
+export default React.memo(ShortlyDescription)

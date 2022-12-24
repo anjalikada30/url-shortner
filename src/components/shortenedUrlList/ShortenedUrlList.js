@@ -3,6 +3,7 @@ import { ShortenedUrl } from '../shortenedUrl';
 import './styles.css';
 
 function ShortenedUrlList({ shortenedUrls }) {
+    console.log('rendering ShortenedUrlList component')
     return (
         <>
             {
@@ -22,4 +23,4 @@ function ShortenedUrlList({ shortenedUrls }) {
     )
 }
 
-export default ShortenedUrlList
+export default React.memo(ShortenedUrlList)

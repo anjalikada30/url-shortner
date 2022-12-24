@@ -1,6 +1,7 @@
 import React from 'react';
 
 function Input({ ShortlyInput, onChange, placeholder, className, value, type, inputRef }) {
+    console.log('rendering Input component')
     return (
         <ShortlyInput
             className={className}
@@ -13,4 +14,4 @@ function Input({ ShortlyInput, onChange, placeholder, className, value, type, in
     )
 }
 
-export default Input;
+export default React.memo(Input);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ApiError, InputField, Loader, ShortenedUrlList, ShortlyDescription } from '../../components'
 import { ERROR_RESPONSE, SUCCESS_RESPONSE } from '../../constants/Constants';
 import { shortenUrl } from '../../service/shortnerService'
@@ -32,6 +32,7 @@ function Home() {
   }
 
   const onUrlSubmit = async (url) => {
+    //no need to shorten url again if it is already shortened
     const nonUnique = shortenedUrls.filter(shortenedUrl => shortenedUrl.actualUrl === url);
     if (!nonUnique.length) {
       setLoading(true);
@@ -43,13 +44,14 @@ function Home() {
         onSubmitFailure(response)
       }
     }
-    else{
+    else {
       //if url is already shortened, place it at beginning of list
       const urls = shortenedUrls.filter(shortenedUrl => shortenedUrl.actualUrl !== url);
       setShortenedUrls([nonUnique[0], ...urls])
       setUrlStatus(SUCCESS_RESPONSE);
     }
   }
+
   return (
     <HomeContainer>
       <ShortlyDescription />
@@ -59,7 +61,11 @@ function Home() {
           ? <ApiError error={apiError} />
           : null
       }
-      <ShortenedUrlList shortenedUrls={shortenedUrls} />
+      {
+        shortenedUrls?.length
+          ? <ShortenedUrlList shortenedUrls={shortenedUrls} />
+          : null
+      }
       {
         loading ?
           <Loader />

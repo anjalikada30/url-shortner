@@ -5,6 +5,7 @@ import { ActualUrl, OuterContainer, CopyButton, ShortUrl, UrlContainer } from '.
 function ShortenedUrl({ url }) {
   const [copyButtonText, setCopyButtonText] = useState("Copy");
   const { actualUrl, shortUrl } = url;
+  console.log('rendering ShortenedUrl component-', url.actualUrl)
   const copyUrlToClipboard = () => {
     setCopyButtonText("Copied!")
     navigator.clipboard.writeText(shortUrl)
@@ -29,5 +30,8 @@ function ShortenedUrl({ url }) {
       </UrlContainer>
   )
 }
-
-export default ShortenedUrl
+// function areEqual(prevProps, nextProps){
+//   console.log(prevProps, nextProps)
+//   return prevProps?.url?.id !== nextProps?.url?.id;
+// }
+export default React.memo(ShortenedUrl);

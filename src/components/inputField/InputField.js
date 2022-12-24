@@ -3,15 +3,17 @@ import { Button } from '../button';
 import { Input } from '../input';
 import { ShortlyButton, ShortlyForm, ShortlyInput } from './InputFieldElements';
 
-function InputField({onSubmit}) {
+function InputField({ onSubmit }) {
+    console.log('rendering InputField component')
     const inputRef = useRef();
+    const onUrlSubmit = (e) => {
+        e.preventDefault()
+        onSubmit(inputRef.current.value)
+        inputRef.current.value = ''
+    }
     return (
         <ShortlyForm
-            onSubmit={(e) => {
-                e.preventDefault()
-                onSubmit(inputRef.current.value)
-                inputRef.current.value = ''
-            }}
+            onSubmit={onUrlSubmit}
         >
             <Input
                 ShortlyInput={ShortlyInput}
@@ -28,4 +30,4 @@ function InputField({onSubmit}) {
     )
 }
 
-export default InputField
+export default InputField;
