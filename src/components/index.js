@@ -6,3 +6,5 @@ export { Input } from './input';
 export { ShortenedUrl } from './shortenedUrl';
 export { ApiError } from './error';
 export { ButtonMailto } from './buttonmailto';
+export { Loader } from './loader';
+export { ShortenedUrlList } from './shortenedUrlList';

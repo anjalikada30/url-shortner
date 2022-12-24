@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ErrorContainer = styled.div`
     background-color: red;
-    width: 70vw;
+    width: 69vw;
     height: 5vh;
     border-radius: 10px;
     color: white;

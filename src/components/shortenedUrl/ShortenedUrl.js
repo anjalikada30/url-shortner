@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../button'
 import { ActualUrl, OuterContainer, CopyButton, ShortUrl, UrlContainer } from './ShortenedUrlElements'
 
-function ShortenedUrl({ actualUrl, shortUrl, copyUrlToClipboard, copyButtonText }) {
+function ShortenedUrl({ url }) {
+  const [copyButtonText, setCopyButtonText] = useState("Copy");
+  const { actualUrl, shortUrl } = url;
+  const copyUrlToClipboard = () => {
+    setCopyButtonText("Copied!")
+    navigator.clipboard.writeText(shortUrl)
+    setTimeout(() => {
+      setCopyButtonText("Copy")
+    }, 3000)
+  }
   return (
-    <OuterContainer>
       <UrlContainer>
         <ActualUrl>
           {actualUrl}
@@ -19,7 +27,6 @@ function ShortenedUrl({ actualUrl, shortUrl, copyUrlToClipboard, copyButtonText 
           onClick={copyUrlToClipboard}
         />
       </UrlContainer>
-    </OuterContainer>
   )
 }
 

@@ -1,0 +1,13 @@
+.urls_container {
+    width: 67vw;
+    border: 2px solid black;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: aqua;
+    border: none;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

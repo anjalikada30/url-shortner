@@ -1,19 +1,5 @@
 import styled from "styled-components";
 
-export const OuterContainer = styled.div`
-    width: 67vw;
-    border: 2px solid black;
-    margin-top: 20px;
-    border-radius: 5px;
-    background-color: aqua;
-    border: none;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
 export const UrlContainer = styled.div`
     width: 98%;
     background-color: white;

@@ -1,51 +1,51 @@
 import React, { useState } from 'react'
-import { ApiError, InputField, ShortenedUrl, ShortlyDescription } from '../../components'
+import { ApiError, InputField, Loader, ShortenedUrlList, ShortlyDescription } from '../../components'
 import { ERROR_RESPONSE, SUCCESS_RESPONSE } from '../../constants/Constants';
 import { shortenUrl } from '../../service/shortnerService'
 import { HomeContainer } from './HomeElements'
 
 function Home() {
-  const [actualUrl, setActualUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState("");
   const [urlStatus, setUrlStatus] = useState("");
   const [apiError, setApiError] = useState();
-  const [copyButtonText, setCopyButtonText] = useState("Copy")
+  const [loading, setLoading] = useState(false);
+  const [shortenedUrls, setShortenedUrls] = useState([])
 
   const onUrlSubmit = async (url) => {
-    const response = await shortenUrl(url);
-    if (response?.status === SUCCESS_RESPONSE) {
-      setActualUrl(url);
-      setUrlStatus(SUCCESS_RESPONSE)
-      if (response?.response?.result)
-        setShortUrl(response?.response?.result?.full_short_link)
-    } else if (response?.status === ERROR_RESPONSE) {
-      setUrlStatus(ERROR_RESPONSE)
-      setApiError(response?.error)
+    const nonUnique = !shortenedUrls.find(shortenedUrl => shortenedUrl.actualUrl === url);
+    if (nonUnique) {
+      setLoading(true);
+      const response = await shortenUrl(url);
+      setLoading(false)
+      if (response?.status === SUCCESS_RESPONSE) {
+        const temp = {
+          id: Math.floor(Math.random() * 1000),
+          actualUrl: url
+        }
+        setUrlStatus(SUCCESS_RESPONSE)
+        if (response?.response?.result) {
+          temp.shortUrl = response?.response?.result?.full_short_link;
+        }
+        setShortenedUrls([temp, ...shortenedUrls]);
+      } else if (response?.status === ERROR_RESPONSE) {
+        setUrlStatus(ERROR_RESPONSE)
+        setApiError(response?.error)
+      }
     }
-  }
-  const copyUrlToClipboard = () => {
-    setCopyButtonText("Copied!")
-    navigator.clipboard.writeText(shortUrl)
-    setTimeout(()=>{
-      setCopyButtonText("Copy")
-    }, 3000)
+    else setUrlStatus(SUCCESS_RESPONSE);
   }
   return (
     <HomeContainer>
       <ShortlyDescription />
       <InputField onSubmit={onUrlSubmit} />
       {
-        urlStatus === SUCCESS_RESPONSE
-          ? <ShortenedUrl
-            actualUrl={actualUrl}
-            shortUrl={shortUrl}
-            copyUrlToClipboard={copyUrlToClipboard}
-            copyButtonText={copyButtonText} />
-          : null
-      }
-      {
         urlStatus === ERROR_RESPONSE
           ? <ApiError error={apiError} />
+          : null
+      }
+      <ShortenedUrlList shortenedUrls={shortenedUrls} />
+      {
+        loading ?
+          <Loader />
           : null
       }
     </HomeContainer>
