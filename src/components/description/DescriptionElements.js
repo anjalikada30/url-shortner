@@ -5,7 +5,7 @@ export const DescriptionContainer = styled.article`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2px
+    margin: 3px
 `;
 
 export const Description = styled.div`

@@ -10,28 +10,45 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [shortenedUrls, setShortenedUrls] = useState([])
 
+  const onSubmitFailure = (response) => {
+    setUrlStatus(ERROR_RESPONSE)
+    setApiError(response?.error)
+    setTimeout(() => {
+      setUrlStatus('');
+      setApiError('');
+    }, 4000)
+  }
+
+  const onSUbmitSuccess = (response, url) => {
+    const temp = {
+      id: Math.floor(Math.random() * 1000),
+      actualUrl: url
+    }
+    setUrlStatus(SUCCESS_RESPONSE)
+    if (response?.response?.result) {
+      temp.shortUrl = response?.response?.result?.full_short_link;
+    }
+    setShortenedUrls([temp, ...shortenedUrls]);
+  }
+
   const onUrlSubmit = async (url) => {
-    const nonUnique = !shortenedUrls.find(shortenedUrl => shortenedUrl.actualUrl === url);
-    if (nonUnique) {
+    const nonUnique = shortenedUrls.filter(shortenedUrl => shortenedUrl.actualUrl === url);
+    if (!nonUnique.length) {
       setLoading(true);
       const response = await shortenUrl(url);
       setLoading(false)
       if (response?.status === SUCCESS_RESPONSE) {
-        const temp = {
-          id: Math.floor(Math.random() * 1000),
-          actualUrl: url
-        }
-        setUrlStatus(SUCCESS_RESPONSE)
-        if (response?.response?.result) {
-          temp.shortUrl = response?.response?.result?.full_short_link;
-        }
-        setShortenedUrls([temp, ...shortenedUrls]);
+        onSUbmitSuccess(response, url);
       } else if (response?.status === ERROR_RESPONSE) {
-        setUrlStatus(ERROR_RESPONSE)
-        setApiError(response?.error)
+        onSubmitFailure(response)
       }
     }
-    else setUrlStatus(SUCCESS_RESPONSE);
+    else{
+      //if url is already shortened, place it at beginning of list
+      const urls = shortenedUrls.filter(shortenedUrl => shortenedUrl.actualUrl !== url);
+      setShortenedUrls([nonUnique[0], ...urls])
+      setUrlStatus(SUCCESS_RESPONSE);
+    }
   }
   return (
     <HomeContainer>
